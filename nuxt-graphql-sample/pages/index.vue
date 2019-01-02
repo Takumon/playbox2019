@@ -1,17 +1,17 @@
 <template>
   <section class="container">
     <div>
+      <input type="number" name="" v-model.number="number">
       <div v-if="$apollo.loading">Loading...</div>
-      <h1>Smart Queryのやつ</h1>
-      <ul>
-        <li v-for="repo in repos" :key="repo.url">
+      <ul v-if="!$apollo.loading">
+        <li v-for="repo in repos" :key="repo.name">
           <a :href="repo.url">{{repo.name}}</a>
-        </li>
-      </ul>
-      <h1>Apollo Queryのやつ</h1>
-      <ul>
-        <li v-for="repo in reposFromApolloQuery" :key="repo.url">
-          <a :href="repo.url">{{repo.name}}</a>
+          <span v-if="repo.viewerHasStarred">Starred</span>
+          <button
+            type="button"
+            @click="addStar(repo.id)"
+            v-if="!repo.viewerHasStarred"
+          >add star</button>
         </li>
       </ul>
     </div>
@@ -21,7 +21,8 @@
 <script>
 import AppLogo from '~/components/AppLogo.vue'
 import getReposGql from '~/apollo/gql/getRepos.gql'
-import GetRepoNames from '~/apollo/gql/sample.gql'
+import addStarGql from '~/apollo/gql/addStar.gql'
+
 
 export default {
   components: {
@@ -37,25 +38,41 @@ export default {
 
   apollo: {
     repos: {
-      query: GetRepoNames,
+      query: getReposGql,
       variables() {
         return {
           number_of_repos: this.number
         }
       },
-      update: data => data.viewer.repositories.nodes
+      update: data => data.viewer.repositories.nodes,
+      error(error) {
+        console.log('We\'ve got an error!', error)
+      }
     }
   },
 
-  created: async function () {
-    const result = await this.$apollo.query({
-      query: GetRepoNames,
-      variables: {
-        number_of_repos: this.number
-      },
-    })
-    this.reposFromApolloQuery = result.data.viewer.repositories.nodes
-  },
+  methods: {
+    async addStar(addStarId) {
+      const { data, error } = await this.$apollo.mutate({
+        mutation: addStarGql,
+        variables: {
+          id: addStarId
+        },
+        refetchQueries: [{
+          query: getReposGql,
+          variables: {
+            number_of_repos: this.number
+          }
+        }]
+      })
+
+      if (error) {
+        console.error(error)
+      } else {
+        console.log(data)
+      }
+    }
+  }
 }
 </script>
 

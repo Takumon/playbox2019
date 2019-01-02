@@ -1,5 +1,12 @@
-query getReposGql{ 
-  viewer { 
-    name
-  }
+query GetRepos($number_of_repos: Int!) {
+    viewer {
+        repositories(last: $number_of_repos) {
+            nodes {
+                name
+                url
+                id
+                viewerHasStarred
+            }
+        }
+    }
 }
