@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`index.vue displayed repos correctly with query data 1`] = `
+<section
+  class="container"
+>
+  <div>
+    <input
+      name=""
+      type="number"
+    />
+     
+    <ul />
+  </div>
+</section>
+`;

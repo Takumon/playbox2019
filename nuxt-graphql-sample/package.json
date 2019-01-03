@@ -10,7 +10,26 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "test:unit": "jest --coverage",
+    "test:unit:watch": "jest --watch",
+    "test:unit:update": "jest --updateSnapshot"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/$1",
+      "^~/(.*)$": "<rootDir>/$1"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "vue",
+      "gql"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest",
+      "\\.(gql|graphql)$": "<rootDir>/node_modules/jest-transform-graphql"
+    }
   },
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.0-rc2.3",
@@ -24,10 +43,17 @@
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.28",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^4.19.1",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^2.1.1",
-    "eslint-plugin-vue": "^4.0.0"
+    "eslint-plugin-vue": "^4.0.0",
+    "jest": "^23.6.0",
+    "jest-transform-graphql": "^2.1.0",
+    "vue-jest": "^3.0.2",
+    "vue-test-utils": "^1.0.0-beta.11"
   }
 }

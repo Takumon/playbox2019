@@ -2,8 +2,9 @@
   <section class="container">
     <div>
       <input type="number" name="" v-model.number="number">
-      <div v-if="$apollo.loading">Loading...</div>
-      <ul v-if="!$apollo.loading">
+      <!-- <div v-if="$apollo.loading">Loading...</div>
+      <ul v-if="!$apollo.loading"> -->
+      <ul>
         <li v-for="repo in repos" :key="repo.name">
           <a :href="repo.url">{{repo.name}}</a>
           <span v-if="repo.viewerHasStarred">Starred</span>
@@ -14,6 +15,7 @@
           >add star</button>
         </li>
       </ul>
+      <!-- </ul> -->
     </div>
   </section>
 </template>
