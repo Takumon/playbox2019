@@ -54,6 +54,15 @@ export default {
   },
 
   methods: {
+    getCache() {
+      const { data } = this.$apollo.provider.defaultClient.readQuery({
+        query: getReposGql,
+        variables: {
+          number_of_repos: this.number
+        }
+      })
+    },
+    
     async addStar(addStarId) {
       const { data, error } = await this.$apollo.mutate({
         mutation: addStarGql,

@@ -42,6 +42,7 @@
     "apollo-link-error": "^1.1.5",
     "apollo-link-http": "^1.5.9",
     "apollo-link-retry": "^2.2.8",
+    "graphql-tag": "^2.10.0",
     "localforage": "^1.7.3",
     "nuxt": "^2.0.0"
   },

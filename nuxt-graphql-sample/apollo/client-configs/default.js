@@ -6,7 +6,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { persistCache } from 'apollo-cache-persist'
 import { onError } from 'apollo-link-error'
 import { RetryLink } from 'apollo-link-retry'
-
+import { withClientState } from 'apollo-link-state'
+import gql from 'graphql-tag'
 
 export default (context) => {
 
@@ -56,6 +57,42 @@ export default (context) => {
 
 
     const cache = new InMemoryCache()
+
+    const initialState = {
+        todos: []
+    }
+
+    const stateLink = withClientState({
+        cache,
+        default: initialState,
+        resolvers: {
+            Mutation: {
+                addTodo: (_, { text }, { cache } ) => {
+                    const query = gql`
+                        query GetTodos {
+                            todos @client {
+                                id
+                                text
+                                completed
+                            }
+                        }
+                    `
+                    const previous = cache.readQuery({ query })
+                    const newTodo = {
+                        id: nextTodoId++,
+                        text,
+                        completed: false,
+                        __typename: 'TodoItem',
+                    }
+                    const data = {
+                        todos: [...previous.todos, newTodo]
+                    }
+                    cache.writeData({ data })
+                    return newTodo
+                }
+            }
+        }
+    })
 
     persistCache({
         cache,
