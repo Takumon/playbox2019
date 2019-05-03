@@ -1,0 +1,19 @@
+{
+  "name": "kuromoji-d3cloud-sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "exec": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.4.1",
+    "d3": "^5.9.2",
+    "d3-cloud": "^1.2.5",
+    "jsdom": "^15.0.0",
+    "kuromoji": "^0.1.2"
+  }
+}
